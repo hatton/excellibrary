@@ -34,7 +34,7 @@ namespace ExcelLibrary.CompoundDocumentFormat
             this.MasterSectorAllocationTable = new List<int>(NumberOfSecIDs);
             SelectSIDs(Document.Header.MasterSectorAllocationTable,0);
             int msid = Document.Header.FirstSectorIDofMasterSectorAllocationTable;
-            while (msid != SID.EOC) 
+            while (msid != SID.EOC && msid >= SID.MSAT) 
             {
                 CurrentMSATSector = msid;
                 int[] SIDs = Document.ReadSectorDataAsIntegers(msid);
