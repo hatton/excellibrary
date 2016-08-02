@@ -41,6 +41,8 @@ Worksheet sheet = book.Worksheets[0];
         colIndex <= row.LastColIndex; colIndex++)
      {
          Cell cell = row.GetCell(colIndex);
+         // accessing pictures in cells
+         Image image = worksheet.Pictures[new Pair<int, int>(rowIndex, colIndex)].Image;
      }
  }
  ```
