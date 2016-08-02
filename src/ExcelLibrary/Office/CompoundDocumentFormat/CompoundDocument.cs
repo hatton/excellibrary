@@ -180,7 +180,7 @@ namespace ExcelLibrary.CompoundDocumentFormat
 
         internal int ReadInt32InSector(int secID, int position)
         {
-            int offset = GetSectorOffset(secID);
+            long offset = GetSectorOffset(secID);
             FileStorage.Position = offset + position;
             return Reader.ReadInt32();
         }
@@ -193,21 +193,21 @@ namespace ExcelLibrary.CompoundDocumentFormat
 
         internal void WriteInSector(int secID, int position, int integer)
         {
-            int offset = GetSectorOffset(secID);
+            long offset = GetSectorOffset(secID);
             FileStorage.Position = offset + position;
             Writer.Write(integer);
         }
 
         internal void WriteInSector(int secID, int position, int[] integers)
         {
-            int offset = GetSectorOffset(secID);
+            long offset = GetSectorOffset(secID);
             FileStorage.Position = offset + position;
             WriteArrayOfInt32(Writer, integers);
         }
 
         internal void WriteInSector(int secID, int position, byte[] data, int index, int count)
         {
-            int offset = GetSectorOffset(secID);
+            long offset = GetSectorOffset(secID);
             FileStorage.Position = offset + position;
             Writer.Write(data, index, count);
         }
@@ -264,7 +264,14 @@ namespace ExcelLibrary.CompoundDocumentFormat
             Int32[] data = new Int32[count];
             for (int i = 0; i < data.Length; i++)
             {
-                data[i] = reader.ReadInt32();
+                try
+                {
+                    data[i] = reader.ReadInt32();
+                }
+                catch (EndOfStreamException)
+                {
+                    data[i] = SID.EOC;
+                }
             }
             return data;
         }

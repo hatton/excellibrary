@@ -117,33 +117,33 @@ namespace ExcelLibrary.CompoundDocumentFormat
             }
         }
 
-        private int GetSectorOffset(int SID)
+        private long GetSectorOffset(int SID)
         {
-            return 512 + SectorSize * SID;
+            return 512 + Math.BigMul(SectorSize, SID);
         }
 
-        private int GetShortSectorOffset(int SSID)
+        private long GetShortSectorOffset(int SSID)
         {
-            return ShortSectorSize * SSID;
+            return Math.BigMul(ShortSectorSize, SSID);
         }
 
         internal int[] ReadSectorDataAsIntegers(int SID)
         {
-            int offset = GetSectorOffset(SID);
+            long offset = GetSectorOffset(SID);
             Reader.BaseStream.Position = offset;
             return ReadArrayOfInt32(Reader, SectorSize / 4);
         }
 
         private byte[] ReadSectorDataAsBytes(int SID)
         {
-            int offset = GetSectorOffset(SID);
+            long offset = GetSectorOffset(SID);
             Reader.BaseStream.Position = offset;
             return Reader.ReadBytes(SectorSize);
         }
 
         private byte[] ReadShortSectorDataAsBytes(int SSID)
         {
-            int offset = GetShortSectorOffset(SSID);
+            long offset = GetShortSectorOffset(SSID);
             ShortStreamContainer.Seek(offset, SeekOrigin.Begin);
             return StreamHelper.ReadBytes(ShortStreamContainer, ShortSectorSize);
         }
